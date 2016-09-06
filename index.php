@@ -51,13 +51,6 @@
 			break;
 		}
 		/**
-		 *	Social media page
-		 */
-		case 'socialmedia' : {
-			include SUBPAGES_DIRECTORY.'socialmedia.php';
-			break;
-		}
-		/**
 		 *	Display fake 404 message when there is no matching subpage
 		 */
 		default : {
