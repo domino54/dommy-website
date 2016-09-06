@@ -45,3 +45,7 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+mp-ws-cache/nickname-last-known.txt
+mp-ws-cache/servers-update-time.txt
+mp-ws-cache/nickname-update-time.txt
+mp-ws-cache/servers-serialized-data.txt
