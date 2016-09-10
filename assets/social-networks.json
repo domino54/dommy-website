@@ -1,0 +1,28 @@
+[
+	{
+		"name": "Facebook",
+		"color": "#369",
+		"image": "facebook.jpg",
+		"url": "https://www.facebook.com/dominotitles/"
+	}, {
+		"name": "YouTube",
+		"color": "#B55",
+		"image": "youtube.png",
+		"url": "https://www.youtube.com/user/dommy54x/"
+	}, {
+		"name": "Twitch",
+		"color": "#658",
+		"image": "twitch.png",
+		"url": "https://www.twitch.tv/domino54tmuf/"
+	}, {
+		"name": "GitHub",
+		"color": "#444",
+		"image": "github.png",
+		"url": "https://github.com/domino54/"
+	}, {
+		"name": "Steam",
+		"color": "#558",
+		"image": "steam.png",
+		"url": "https://steamcommunity.com/id/domino54/"
+	}
+]

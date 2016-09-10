@@ -1,132 +1,57 @@
 ﻿<?php
-	require_once '/libraries/autoload.php';
-	
-	const SUBPAGES_DIRECTORY = 'subpages/';
-	const CACHE_DIRECTORY = 'mp-ws-cache/';
-	const CACHE_INTERVAL = 60;
-	const MP_WS_EXCEPTION_PREFIX = 'ManiaPlanet WS error: ';
-	const DOMINO_MP_LOGIN = 'domino54';
-	
-	$currentPageId = explode("&", $_SERVER["QUERY_STRING"])[0];
-	include 'mp-ws-auth.php';
-	
-	/**
-	 *	Initialize page display settings
-	 */
-	$useNavigation = false;
-	$useFooterInfo = false;
-	
-	/**
-	 *	Initialize page default content
-	 */
-	$pageTitleMeta = '';
-	$pageDescriptionMeta = '';
-	$pageStylesheetMeta = '';
-	$headerTitleText = '';
-	$textPageContent = '';
 
-	/**
-	 *	Website content depending on query string
-	 */
-	switch ($currentPageId) {
-		/**
-		 *	Display home page (About) when query is empty
-		 */
-		case '' : {
-			include SUBPAGES_DIRECTORY.'home.php';
-			break;
-		}
-		/**
-		 *	Projects list page
-		 */
-		case 'projects' : {
-			include SUBPAGES_DIRECTORY.'projects.php';
-			break;
-		}
-		/**
-		 *	Servers list page
-		 */
-		case 'servers' : {
-			include SUBPAGES_DIRECTORY.'servers.php';
-			break;
-		}
-		/**
-		 *	Social media page
-		 */
-		case 'socialmedia' : {
-			include SUBPAGES_DIRECTORY.'socialmedia.php';
-			break;
-		}
-		/**
-		 *	Display fake 404 message when there is no matching subpage
-		 */
-		default : {
-			include SUBPAGES_DIRECTORY.'404.php';
-			break;
-		}
-	}
+include __DIR__.'/libraries/autoload.php';
+include __DIR__.'/libraries/dommycache.php';
+include __DIR__.'/page-constructor.php';
+include __DIR__.'/mp-ws-auth.php';
 
-	/**
-	 *	Display navigation bar
-	 */
-	$textNavigation = '';
-	if ($useNavigation) $textNavigation = '
-<div id="navigation-bar">
-	<div style="margin: auto; max-width: 960px;">
-		<a id="nav-logo-domino" href="?"></a>
-		<div id="nav-buttons-container"></div>
-		<div id="nav-drop-container"></div>
-	</div>
-	<script src="./assets/navigation.js"></script>
-</div>
-<div id="navigation-filler"></div>
-	';
+const SUBPAGES_DIRECTORY = './subpages/';
+const MP_WS_EXCEPTION_PREFIX = 'ManiaPlanet WS error: ';
+const PAGE_BASE_FILE = './base.html';
 
-	/**
-	 *	Display page header when its text is specified
-	 */
-	$textHeaderImage = '';
-	if ($headerTitleText != '') $textHeaderImage = '<div id="header-image"><div style="margin: auto;">'.$headerTitleText.'</div></div>';
+$pageConstructor = new \PageConstructor\PageConstructor();
+$dommyCache = new \DommyCache\Cache();
+$currentPageId = explode("&", $_SERVER["QUERY_STRING"])[0];
 
-	/**
-	 *	Display footer information text
-	 */
-	$textFooterInfo = '';
-	if ($useFooterInfo) $textFooterInfo = '
-<div id="footer-text">
-	This site won\'t work correctly, if you\'ve disabled JavaScript in your web browser settings.<br>
-	This website has been made by domino54. All graphics and quotes belong to their respective owners.<br>
-	Names and logos of Nadeo, ManiaPlanet, TrackMania and ShootMania are trademarks of Ubisoft Enertainment.<br>
-	© domino54 2016
-</div>
-	';
-?>
-<!DOCTYPE HTML>
-<html lang="en">
-<head>
-	<title><?=$pageTitleMeta?></title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<meta name="description" content="<?=$pageDescriptionMeta?>">
-	<meta name="keywords" content="domino'54, Dommy'54, ManiaPlanet, TrackMania, ShootMania, Invasion">
-	<meta name="theme-color" content="#222">
-	<link rel="stylesheet" href="./assets/styles.css" type="text/css"/>
-	<link rel="icon" href="./assets/icon.ico">
-	<script src="./assets/mp-style-parser.js"></script>
-	<style type="text/css"><?=$pageStylesheetMeta?></style>
-</head>
-<body onresize="adjustNavigation()">
-<?=$textNavigation?>
-<?=$textHeaderImage?>
-<?=$textPageContent?>
-<?=$textFooterInfo?>
-<script type="text/javascript">
-elements = document.getElementsByClassName('maniaplanet-format');
-for (i = 0; i < elements.length; i++) {
-	curElement = elements[i];
-	curElement.innerHTML = MPStyle.Parser.toHTML(curElement.innerHTML);
-	curElement.style.display = 'inline';
+/**
+ *	Get an attribute value from the query.
+ *
+ *	@param string $name The name of the attribute to get value.
+ *	@return mixed The value of an attribute.
+ */
+function queryGet($name) {
+	if (!is_string($name) || !isset($_GET[$name])) return;
+	return $_GET[$name];
 }
-</script>
-</body>
-</html>
+
+/**
+ *	Convert time difference number into understandable text.
+ *
+ *	@param int $timeDifference The time difference to convert.
+ *	@return string Time difference text.
+ */
+function timeDifferenceToText($timeDifference) {
+	if (!is_int($timeDifference) || $timeDifference <= 0) return 'just now';
+	$hours = floor($timeDifference / 3600);
+	$minutes = floor($timeDifference / 60);
+
+	if ($hours > 1) return $hours.' hours ago';
+	if ($hours == 1) return '1 hour ago';
+	if ($minutes > 1) return $minutes.' minutes ago';
+	if ($minutes == 1) return '1 minute ago';
+	if ($timeDifference > 1) return $timeDifference.' seconds ago';
+	return '1 second ago';
+	
+}
+
+/**
+ *	Check if the website specified in query exists on the server and display it
+ */
+if ($currentPageId == '') include(SUBPAGES_DIRECTORY.'home.php');
+else {
+	$subpagePath = SUBPAGES_DIRECTORY.$currentPageId.'.php';
+	if (file_exists($subpagePath)) include($subpagePath);
+	else include(SUBPAGES_DIRECTORY.'404.php');
+}
+
+?>

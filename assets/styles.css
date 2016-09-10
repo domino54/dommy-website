@@ -1,5 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Raleway:400,700);
 
+html {
+	min-width: 280px;
+	min-height: 100%;
+}
 body {
 	background: #EEE url('background.jpg') center no-repeat fixed;
 	background-size: cover;
@@ -53,8 +57,7 @@ body {
 	height: 50px;
 	
 	margin: 0px;
-	padding-left: 12px;
-	padding-right: 12px;
+	padding: 0px 12px;
 	
 	color: #777;
 	font-size: 14pt;
@@ -132,7 +135,7 @@ body {
 }
 #subpage-description {
 	max-width: 976px;
-	margin: 8px auto;
+	margin: auto;
 	margin-top: 20px;
 	margin-bottom: 20px;
 	
@@ -204,8 +207,7 @@ body {
 	background-size: contain;
 	width: 100%;
 	height: 180px;
-	margin-top: 8px;
-	margin-bottom: 8px;
+	margin: 8px 0px;
 }
 #home-messenger-button {
 	background: #08D;
@@ -230,7 +232,7 @@ body {
 	margin-left: 8px;
 	margin-right: 8px;
 	
-	background: #EEE;
+	background: #FFF;
 	border-radius: 5px;
 	box-shadow: 0px 1px 5px rgba(0, 0, 0, .5);
 	text-align: left;
@@ -260,8 +262,7 @@ body {
 	line-height: 36px;
 	margin-left: 12px;
 	margin-bottom: 12px;
-	padding-left: 16px;
-	padding-right: 16px;
+	padding: 0px 16px;
 	
 	background: #05A;
 	border-radius: 5px;
@@ -314,10 +315,8 @@ body {
 	border-bottom: 1px solid #BBB;
 }
 .server-card-name {
-	display: none;
 	flex: 1;
-	padding-left: 16px;
-	padding-right: 16px;
+	padding: 0px 16px;
 	width: 100%;
 }
 .server-card-details {
@@ -341,11 +340,8 @@ body {
 	display: inline-block;
 	height: 36px;
 	line-height: 36px;
-	margin: 7px;
-	margin-left: 16px;
-	margin-right: 16px;
-	padding-left: 16px;
-	padding-right: 16px;
+	margin: 7px 16px;
+	padding: 0px 16px;
 	
 	border-radius: 5px;
 	box-shadow: 0px 1px 5px rgba(0, 0, 0, .5);
@@ -366,13 +362,10 @@ body {
 	.server-card {
 		flex-direction: column;
 		line-height: 20px;
-		padding-top: 10px;
-		padding-bottom: 10px;
+		padding: 10px;
 	}
 	.server-card-name {
 		text-align: center;
-		padding-left: 0px;
-		padding-right: 0px;
 	}
 	.server-card-buttton {
 		display: none;
@@ -420,4 +413,202 @@ body {
 	font-size: 14pt;
 	text-transform: uppercase;
 	text-decoration: none;
+}
+
+/**
+ *	Galaxy ranking page
+ */
+#ranking-list-container {
+	max-width: 580px;
+	margin: 0px auto;
+	margin-bottom: 16px;
+	
+	background: #FFF;
+	border-radius: 5px;
+	box-shadow: 0px 1px 5px rgba(0, 0, 0, .5);
+}
+.ranking-card {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	
+	min-height: 28px;
+	line-height: 28px;
+	border-bottom: 1px solid #BBB;
+}
+.ranking-card-position {
+	margin-left: 12px;
+	font-size: 14pt;
+	font-weight: bold;
+}
+.ranking-card-name {
+	display: none;
+	flex: 1;
+	width: 100%;
+	margin-left: 8px;
+	margin-right: 8px;
+}
+.ranking-card-zone {
+	margin-left: 8px;
+	text-align: center;
+	color: #888;
+	font-size: 10pt;
+}
+.ranking-card-points {
+	display: inline-block;
+	margin-left: 12px;
+	margin-right: 8px;
+	padding-right: 32px;
+
+	background: url('ladder-points.png') right no-repeat;
+	background-size: contain;
+
+	text-align: right;
+	font-family: Segoe UI, Raleway;
+	font-size: 12pt;
+	font-weight: bold;
+	color: #B8B171;
+}
+@media (max-width: 450px) {
+	.ranking-card {
+		flex-direction: column;
+	}
+}
+
+/**
+ *	ManiaPlanet data browser
+ */
+#mania-data-input {
+	margin: auto;
+	max-width: 640px;
+	text-align: center;
+}
+#mania-data-input input {
+	width: 100%;
+	padding: 8px 0px;
+
+	background: #FFF url('icon-search.png') no-repeat;
+	background-position: right 8px center;
+	background-size: 28px;
+
+	border-radius: 3px;
+	border: 1px solid #777;
+	font: 14pt Raleway;
+	text-align: center;
+
+	transition: 250ms;
+}
+#mania-data-input input:focus {
+	outline: none;
+	box-shadow: 0px 0px 2px #48F;
+	border-color: #48F;
+	transition: 250ms;
+}
+#mania-search-desc {
+	margin-top: 4px;
+	color: #777;
+	font-size: 9pt;
+	text-transform: uppercase;
+}
+#mania-type-selector {
+	text-align: center;
+	margin: 16px 0px;
+}
+#mania-type-selector a {
+	display: inline-block;
+	line-height: 32px;
+	margin: 4px;
+	padding: 0px 16px;
+	
+	background: #05A;
+	border-radius: 5px;
+	box-shadow: 0px 1px 5px rgba(0, 0, 0, .5);
+	
+	color: #FFF;
+	background: #06A;
+	font-weight: bold;
+	font-size: 14pt;
+	text-transform: uppercase;
+	text-decoration: none;
+	transition: 250ms;
+}
+#mania-type-selector a:hover {
+	background: #37D;
+	transition: 250ms;
+	cursor: pointer;
+}
+#mania-data-container {
+	max-width: 960px;
+	margin: auto;
+	margin-top: 16px;
+	margin-bottom: 16px;
+
+	background: #FFF;
+	border-radius: 5px;
+	box-shadow: 0px 1px 5px rgba(0, 0, 0, .5);
+	text-align: left;
+}
+.mania-data-card {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	
+	padding: 12px 0px;
+	border-bottom: 1px solid #BBB;
+}
+.mania-data-property {
+	flex-shrink: 0;
+	width: 124px;
+	padding: 0px 8px;
+
+	color: #888;
+	text-align: right;
+	font-size: 10pt;
+}
+.mania-data-value {
+	padding: 0px 8px;
+	word-break: break-all;
+}
+.mania-data-value a {
+	text-decoration: none;
+	font-weight: bold;
+	color: #07F;
+}
+.mania-data-zone {
+	display: inline-block;
+	padding-left: 26px;
+	background: left no-repeat;
+	background-size: 20px;
+}
+.mania-data-lp {
+	display: inline-block;
+	padding-right: 36px;
+
+	background: url('ladder-points.png') right no-repeat;
+	background-size: 32px 32px;
+
+	font-weight: bold;
+	color: #B8B171;
+}
+.mania-data-emblem {
+	background: no-repeat;
+	background-size: contain;
+	width: 128px;
+	height: 128px;
+}
+.mania-data-stars {
+	background: url('icon-maniastar.png') left center;
+	background-size: contain;
+	height: 18px;
+}
+@media (max-width: 640px) {
+	.mania-data-card {
+		flex-direction: column-reverse;
+	}
+	.mania-data-property {
+		text-align: center;
+	}
+	.mania-data-value {
+		text-align: center;
+	}
 }

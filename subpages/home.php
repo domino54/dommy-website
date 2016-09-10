@@ -1,57 +1,70 @@
 <?php
-	$useNavigation = true;
-	$useFooterInfo = true;
-	
-	$pageTitleMeta = 'Dommy';
-	$pageDescriptionMeta = 'Some lazy dude writing some scripts';
-	$headerTitleText = 'Dommy';
-	
+
+/**
+ *	Get the current name
+ */
+const CACHE_ENTRY_NAME = 'domino-nickname';
+const CACHE_NAME_LIFETIME = 3600;
+const DOMINO_MP_LOGIN = 'domino54';
+$ManiaPlanet = new \Maniaplanet\WebServices\Players(MP_WS_USERNAME, MP_WS_PASSWORD);
+$dominoNickName = 'Dommy';
+
+/**
+ *	Start new requests if cached data is too old or if there is no cache file
+ */
+if ($dommyCache->hasExpired(CACHE_ENTRY_NAME, CACHE_NAME_LIFETIME)) {
 	/**
-	 *	Get the current name
+	 *	Get the nickname
 	 */
-	$ManiaPlanet = new \Maniaplanet\WebServices\Players(MP_WS_USERNAME, MP_WS_PASSWORD);
-	$nameUpdateTimeCacheFile = CACHE_DIRECTORY.'nickname-update-time.txt';
-	$nameLastKnownCacheFile = CACHE_DIRECTORY.'nickname-last-known.txt';
-	$lastNameUpdateTime = -1;
-	$lastKnownNickName = '';
-	
-	if (file_exists($nameUpdateTimeCacheFile))
-		$lastNameUpdateTime = intval(file_get_contents($nameUpdateTimeCacheFile));
-	
-	/**
-	 *	Start new requests if cached data is too old or if there is no cache file
-	 */
-	if (time() >= $lastNameUpdateTime + CACHE_INTERVAL || !file_exists($nameLastKnownCacheFile)) {
-		$lastNameUpdateTime = time();
-		file_put_contents($nameUpdateTimeCacheFile, $lastNameUpdateTime);
-		
-		/**
-		 *	Get the nickname
-		 */
-		try {
-			$player = $ManiaPlanet->get(DOMINO_MP_LOGIN);
-			if ($player) $lastKnownNickName = $player->nickname;
-		}
-		catch (\Maniaplanet\WebServices\Exception $e) { }
-		
-		// Save nickname in cache
-		file_put_contents($nameLastKnownCacheFile, $lastKnownNickName);
+	try {
+		$player = $ManiaPlanet->get(DOMINO_MP_LOGIN);
+		if ($player) $dominoNickName = $player->nickname;
 	}
-	/**
-	 *	Load previous data from cache
-	 */
-	else $lastKnownNickName = file_get_contents($nameLastKnownCacheFile);
+	catch (Exception $e) { }
 	
-	/**
-	 *	Setup the obtained nickname
-	 */
-	if ($lastKnownNickName != '')
-		$headerTitleText = '<span class="maniaplanet-format" style="display: none">'.$lastKnownNickName.'</span>';
-	
-	/**
-	 *	Print page contents
-	 */
-	$textPageContent = '
+	// Save nickname in cache
+	$dommyCache->setEntry(CACHE_ENTRY_NAME, $dominoNickName);
+}
+/**
+ *	Load previous data from cache
+ */
+else $dominoNickName = $dommyCache->getContent(CACHE_ENTRY_NAME);
+
+/**
+ *	Get the data of the social networks
+ */
+const NETWORKS_DATA = './assets/social-networks.json';
+$networksData = array();
+if (file_exists(NETWORKS_DATA))	$networksData = json_decode(file_get_contents(NETWORKS_DATA), true);
+
+/**
+ *	Print the projects cards
+ */
+$networksDocument = '';
+
+if (is_array($networksData) && count($networksData) > 0) {
+	foreach ($networksData as $network) {
+		if (!is_array($network)) continue;
+
+		$networksDocument .= '
+			<div class="media-card">
+				<a class="media-card-avatar" href="'.$network['url'].'" style="background-image: url(\'./assets/social-media-icons/'.$network['image'].'\');"></a>
+				<a class="media-card-name" href="'.$network['url'].'" style="background-color: '.$network['color'].';">'.$network['name'].'</a>
+			</div>
+		';
+	}
+}
+
+/**
+*	Generate content of the current page
+*/
+$pageConstructor->showNavigation();
+$pageConstructor->showFooter();
+
+$pageConstructor->setPageTitle('Dommy');
+$pageConstructor->setHeaderText('<span class="maniaplanet-format" style="display: none">'.htmlspecialchars($dominoNickName).'</span>');
+
+$pageConstructor->setPageContents('
 <div id="home-container">
 	<div id="home-content-main">
 		<div class="project-image" style="background-image: url(\'./assets/about-screen.jpg\'); height: 360px;"></div>
@@ -84,7 +97,11 @@
 		</div>
 	</div>
 </div>
-<div id="social-media-container"></div>
-<script src="./assets/socialmedia.js"></script>
-	';
+<div id="social-media-container">
+	'.$networksDocument.'
+</div>
+');
+
+echo $pageConstructor->composePage(PAGE_BASE_FILE);
+
 ?>

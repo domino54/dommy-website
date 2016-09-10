@@ -3,6 +3,10 @@ var buttonsData = [{
 	link: "?",
 	width: 88.53
 }, {
+	text: "Galaxy",
+	link: "?galaxy",
+	width: 97.42
+}, {
 	text: "Projects",
 	link: "?projects",
 	width: 116.59
@@ -10,6 +14,10 @@ var buttonsData = [{
 	text: "Servers",
 	link: "?servers",
 	width: 106.11
+}, {
+	text: "Data",
+	link: "?maniadata",
+	width: 70.88
 }];
 
 var navButtonsContainer = document.getElementById("nav-buttons-container");
